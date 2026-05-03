@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMIRA – Weddings & Events Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E8D5B0;
+    --gold-dark: #8B6F42;
+    --cream: #FAF7F2;
+    --dark: #1A1714;
+    --muted: #6B6460;
+    --white: #FFFFFF;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Jost', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--dark);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+    transition: all 0.3s;
+  }
+
+  .nav-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+  }
+  .nav-logo span:first-child {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--dark);
+    letter-spacing: 0.04em;
+  }
+  .nav-logo span:last-child {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 400;
+    color: var(--gold);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-top: -2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dark);
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold-dark); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold-dark);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .nav-cta:hover {
+    background: var(--gold);
+    color: var(--white);
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem 5rem 4rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.12;
+    color: var(--dark);
+    margin-bottom: 1.2rem;
+    font-style: italic;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 380px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+  .hero-subtitle strong {
+    color: var(--dark);
+    font-weight: 500;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-dark); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--dark);
+    border: 1px solid rgba(26,23,20,0.25);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold-dark);
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-img-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    height: 100%;
+    gap: 6px;
+    padding: 1rem 1rem 1rem 0;
+  }
+  .hero-img-grid .img-main {
+    grid-row: 1 / 3;
+    background: #c9b99a url('https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80') center/cover;
+    border-radius: 2px;
+  }
+  .hero-img-grid .img-top {
+    background: #d4c4a8 url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&q=80') center/cover;
+    border-radius: 2px;
+  }
+  .hero-img-grid .img-bot {
+    background: #bfae97 url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=400&q=80') center/cover;
+    border-radius: 2px;
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 3rem;
+    background: var(--white);
+    padding: 1rem 1.5rem;
+    border-left: 3px solid var(--gold);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .hero-badge p {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+  .hero-badge strong {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--dark);
+    margin-bottom: 1.2rem;
+  }
+
+  /* ── SERVICES ── */
+  #services {
+    padding: 7rem 4rem;
+    background: var(--white);
+  }
+
+  .services-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1150px;
+    margin: 0 auto;
+  }
+
+  /* Row 2: 2 cards centered */
+  .services-grid .service-card:nth-child(4),
+  .services-grid .service-card:nth-child(5) {
+    /* handled via wrapper below */
+  }
+
+  .services-row2 {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1150px;
+    margin: 2rem auto 0;
+  }
+  .services-row2 .service-card {
+    width: calc(33.333% - 1rem);
+    max-width: 360px;
+  }
+
+  .service-card {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    transition: box-shadow 0.3s;
+  }
+  .service-card:hover { box-shadow: 0 6px 32px rgba(0,0,0,0.12); }
+
+  .service-img-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 0.85;
+    overflow: hidden;
+    border-radius: 50% 50% 0 0 / 55% 55% 0 0;
+  }
+
+  .service-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .service-card:hover .service-img { transform: scale(1.04); }
+
+  .service-body {
+    padding: 1.8rem 1.8rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+  }
+
+  .service-name {
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #1a2340;
+    line-height: 1.3;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.01em;
+  }
+
+  .service-desc {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    flex: 1;
+  }
+
+  .service-link {
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--gold-dark);
+    text-decoration: none;
+    margin-bottom: 1.4rem;
+    transition: color 0.2s;
+    display: inline-block;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: var(--sans);
+    letter-spacing: 0.04em;
+  }
+  .service-link:hover { color: var(--gold); }
+
+  .service-bottom-line {
+    height: 2px;
+    background: var(--gold-light);
+    margin: 0 1.8rem;
+    border-radius: 1px;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 6rem 4rem;
+    background: var(--cream);
+  }
+
+  .about-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .about-imgs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-circle {
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(201,169,110,0.15);
+  }
+
+  .about-circle-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #f5edd8 url('https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-text .section-tag {
+    color: var(--gold-dark);
+    letter-spacing: 0.25em;
+  }
+
+  .about-text .section-title {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-style: normal;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: #1a2340;
+    line-height: 1.25;
+    margin-bottom: 1.4rem;
+  }
+
+  .about-text p {
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    margin-bottom: 0.8rem;
+    text-align: justify;
+  }
+  .about-text strong { color: #1a2340; font-weight: 600; }
+
+  /* ── CTA BAND ── */
+  #cta-band {
+    background: var(--dark);
+    padding: 5rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .cta-band-text .section-title { color: var(--white); }
+  .cta-band-text p {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.92rem;
+  }
+
+  /* ── DISTINGUISHES ── */
+  #distingue {
+    padding: 7rem 4rem;
+    background: var(--cream);
+    text-align: center;
+  }
+
+  .dist-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 960px;
+    margin: 3.5rem auto 0;
+  }
+
+  .dist-card {
+    padding: 2.5rem 2rem;
+    background: var(--white);
+    border-top: 2px solid var(--gold);
+    text-align: left;
+  }
+
+  .dist-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--gold-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+  }
+  .dist-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+
+  .dist-card h3 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+  .dist-card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── STATS ── */
+  #stats {
+    padding: 6rem 4rem;
+    background: var(--gold);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 2rem;
+    border-right: 1px solid rgba(255,255,255,0.2);
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ── FINAL CTA ── */
+  #final-cta {
+    padding: 7rem 4rem;
+    text-align: center;
+    background: var(--white);
+  }
+
+  .final-cta-inner { max-width: 600px; margin: 0 auto; }
+  .final-cta-inner p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 1rem 0 2.5rem;
+  }
+
+  .separator {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.2rem auto;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    padding: 3.5rem 4rem 2rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 2rem;
+  }
+
+  .footer-brand .nav-logo span:first-child { color: var(--white); font-size: 1.3rem; }
+  .footer-brand > p {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    margin-top: 1rem;
+    max-width: 260px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.5rem; }
+  .footer-col ul li a {
+    font-size: 0.83rem;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--gold-light); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+  }
+
+  /* ══════════════════════════════
+     MODAL – Bar à Parfums
+  ══════════════════════════════ */
+  #modal-parfums {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(26,23,20,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+    animation: fadeIn 0.25s ease;
+  }
+  #modal-parfums.open { display: flex; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  .modal-box {
+    background: var(--cream);
+    max-width: 900px;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    animation: slideUp 0.35s ease;
+    margin: auto;
+  }
+
+  .modal-close-btn {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--muted);
+    z-index: 10;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close-btn:hover { color: var(--dark); }
+
+  .modal-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 340px;
+  }
+
+  .modal-hero-img {
+    background: #c9b99a url('https://images.unsplash.com/photo-1541533848490-bc8115cd6522?w=700&q=80') center/cover;
+  }
+
+  .modal-hero-text {
+    background: var(--white);
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .modal-num {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-service-title {
+    font-family: var(--sans);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #1a2340;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .modal-lead {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.85;
+  }
+
+  .modal-badges {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    padding: 1.4rem 2.5rem 0;
+  }
+
+  .modal-badge {
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    border: 1px solid var(--gold-light);
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+  }
+
+  .modal-content {
+    padding: 2rem 2.5rem;
+  }
+
+  .modal-content p {
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.9;
+    margin-bottom: 0.9rem;
+    text-align: justify;
+  }
+
+  .modal-content strong { color: #1a2340; font-weight: 500; }
+
+  .modal-divider {
+    height: 1px;
+    background: var(--gold-light);
+    margin: 0 2.5rem;
+  }
+
+  .modal-footer-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.8rem 2.5rem 2.2rem;
+  }
+
+  .btn-modal-primary {
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 999px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .btn-modal-primary:hover { background: var(--gold-dark); }
+
+  .btn-modal-outline {
+    background: transparent;
+    color: var(--gold-dark);
+    border: 1.5px solid var(--gold);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.82rem 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 999px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .btn-modal-outline:hover { background: var(--gold); color: var(--white); }
+
+  /* ══════════════════════════════
+     MODAL – Conciergerie Digitale
+  ══════════════════════════════ */
+  #modal-conciergerie {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(26,23,20,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+    animation: fadeIn 0.25s ease;
+  }
+  #modal-conciergerie.open { display: flex; }
+
+  /* ══════════════════════════════
+     MODALS – Packs (Sur Mesure / Clé en Main / À la carte)
+  ══════════════════════════════ */
+  #modal-sur-mesure,
+  #modal-cle-en-main,
+  #modal-a-la-carte {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(26,23,20,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+    animation: fadeIn 0.25s ease;
+  }
+  #modal-sur-mesure.open,
+  #modal-cle-en-main.open,
+  #modal-a-la-carte.open { display: flex; }
+
+  /* ══════════════════════════════
+     PAGES PLEIN ÉCRAN (Processus / Contact)
+  ══════════════════════════════ */
+  .page-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--cream);
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+  }
+  .page-overlay.open { display: block; }
+
+  /* ── Processus page ── */
+  .process-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem 6rem;
+  }
+  .process-close {
+    position: fixed;
+    top: 1.4rem;
+    right: 2rem;
+    background: var(--dark);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+  }
+  .process-close:hover { background: var(--gold); }
+
+  .process-tag {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .process-main-title {
+    font-family: var(--sans);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: #1a2340;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 2.5rem;
+  }
+  .process-check-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+  }
+  .process-check-icon svg { width: 22px; height: 22px; stroke: var(--white); fill: none; stroke-width: 2.5; }
+  .process-intro {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 4rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.85;
+  }
+
+  .process-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 5rem;
+    align-items: start;
+  }
+  .process-img-col {
+    position: sticky;
+    top: 100px;
+  }
+  .process-img-circle {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #c9b99a url('https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80') center/cover;
+    box-shadow: 0 8px 40px rgba(201,169,110,0.2);
+  }
+
+  .process-steps { display: flex; flex-direction: column; gap: 0; }
+  .process-step {
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .process-step:last-child { border-bottom: none; }
+  .step-num {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .step-title {
+    font-family: var(--sans);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a2340;
+    margin-bottom: 0.7rem;
+    line-height: 1.3;
+  }
+  .step-desc {
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.85;
+  }
+  .step-desc strong { color: #1a2340; font-weight: 600; }
+
+  .process-rdv-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 3.5rem;
+  }
+  .btn-process-rdv {
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 1rem 2.5rem;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .btn-process-rdv:hover { background: var(--gold-dark); }
+
+  /* ── Contact page ── */
+  .contact-page { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+
+  .contact-top {
+    background: var(--cream);
+    text-align: center;
+    padding: 3rem 2rem 4rem;
+    margin-bottom: 0;
+  }
+  .contact-top-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+  .contact-top-title {
+    font-family: var(--sans);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: #1a2340;
+    line-height: 1.2;
+  }
+
+  .contact-cards-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .contact-info-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(201,169,110,0.15);
+  }
+  .contact-icon-circle {
+    width: 52px;
+    height: 52px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .contact-icon-circle svg { width: 22px; height: 22px; fill: var(--white); }
+  .contact-card-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+  .contact-card-value {
+    font-size: 0.9rem;
+    color: #1a2340;
+    font-weight: 500;
+    line-height: 1.7;
+  }
+
+  .contact-map-section {
+    width: 100%;
+    height: 320px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(201,169,110,0.2);
+  }
+  .contact-map-section iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  .contact-form-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .contact-form-left h2 {
+    font-family: var(--sans);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #1a2340;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+  .contact-socials-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .contact-socials-row p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .social-icon-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+  .social-icon-btn:hover { opacity: 0.8; }
+  .social-icon-btn.fb { background: #1877F2; }
+  .social-icon-btn.ig { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+  .social-icon-btn.wa { background: #25D366; }
+  .social-icon-btn svg { width: 22px; height: 22px; fill: var(--white); }
+
+  .contact-form-right { }
+  .form-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #1a2340;
+    display: block;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+  .form-label span { color: var(--gold); }
+  .form-input, .form-textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(201,169,110,0.4);
+    padding: 0.55rem 0;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: #1a2340;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 1.5rem;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: #aaa; }
+  .form-input:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  .form-radio-group { margin-bottom: 1.5rem; }
+  .form-radio-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #1a2340;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.88rem;
+    color: #555;
+    cursor: pointer;
+  }
+  .radio-option input { accent-color: var(--gold); }
+
+  .btn-send {
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 0.9rem 2.8rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 0.5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-send:hover { background: var(--gold-dark); }
+
+  @media (max-width: 768px) {
+    .process-layout { grid-template-columns: 1fr; }
+    .process-img-col { position: static; }
+    .contact-cards-row { grid-template-columns: 1fr; }
+    .contact-form-layout { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { height: 380px; }
+    .hero-left { padding: 3rem 1.5rem; }
+    .hero-img-grid { padding: 0; gap: 4px; }
+    #services { padding: 4rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    #about { padding: 3rem 1.5rem; }
+    .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .about-circle { width: 260px; height: 260px; }
+    #cta-band { flex-direction: column; padding: 3rem 1.5rem; text-align: center; }
+    .dist-grid { grid-template-columns: 1fr; }
+    #stats { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    #distingue, #final-cta, #stats { padding: 4rem 1.5rem; }
+    .modal-hero-grid { grid-template-columns: 1fr; }
+    .modal-hero-img { min-height: 220px; }
+    .modal-hero-text { padding: 2rem 1.5rem; }
+    .modal-content, .modal-badges, .modal-footer-btns, .modal-divider { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .modal-divider { margin: 0 1.5rem; }
+    .services-row2 { flex-direction: column; align-items: center; }
+    .services-row2 .service-card { width: 100%; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     MODAL – Bar à Parfums Éphémère
+══════════════════════════════ -->
+<div id="modal-parfums" role="dialog" aria-modal="true" aria-labelledby="modal-parfums-title">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal('modal-parfums')" aria-label="Fermer">✕</button>
+
+    <div class="modal-hero-grid">
+      <div class="modal-hero-img"></div>
+      <div class="modal-hero-text">
+        <div class="modal-num">01</div>
+        <h2 class="modal-service-title" id="modal-parfums-title">Bar à Parfums Éphémère</h2>
+        <p class="modal-lead">Un stand animé au cocktail où vos invités créent leur parfum personnalisé en flacons « Amira Signature » — un souvenir unique ancré dans l'artisanat marocain.</p>
+      </div>
+    </div>
+
+    <div class="modal-badges">
+      <span class="modal-badge">Sur mesure</span>
+      <span class="modal-badge">Artisanat marocain</span>
+      <span class="modal-badge">Souvenir unique</span>
+      <span class="modal-badge">Animation cocktail</span>
+    </div>
+
+    <div class="modal-content">
+      <p>
+        Vous rêvez d'offrir à vos invités une expérience mémorable, au-delà du simple cadeau ? Le <strong>Bar à Parfums Éphémère AMIRA</strong> transforme votre cocktail de mariage en atelier de création olfactive, où chaque personne repart avec un flacon personnalisé à son image.
+      </p>
+      <p>
+        Animé par notre parfumeure experte, le stand propose une sélection d'essences nobles — fleurs d'oranger, oud, rose de Taif, ambre et bois de cèdre — soigneusement sourcées auprès des meilleurs artisans du Maroc. Vos invités mélangent, dosent et composent leur signature olfactive en quelques minutes, guidés étape par étape.
+      </p>
+      <p>
+        Chaque flacon est gravé au prénom de l'invité et habillé du ruban aux couleurs de votre mariage, dans un <strong>packaging « Amira Signature »</strong> élégant. Un souvenir qui traverse le temps et réveille, des années plus tard, le souvenir de votre grand jour.
+      </p>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-footer-btns">
+      <a href="#" class="btn-modal-primary" onclick="closeModal('modal-parfums'); openPage('page-contact'); return false;">
+        Processus Détaillé ↓
+      </a>
+      <a href="#" class="btn-modal-outline" onclick="closeModal('modal-parfums'); openPage('page-contact'); return false;">
+        Faisons Connaissance →
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     MODAL – Conciergerie Digitale
+══════════════════════════════ -->
+<div id="modal-conciergerie" role="dialog" aria-modal="true" aria-labelledby="modal-conciergerie-title">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal('modal-conciergerie')" aria-label="Fermer">✕</button>
+
+    <div class="modal-hero-grid">
+      <div class="modal-hero-img" style="background: #1a2340 url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=700&q=80') center/cover;"></div>
+      <div class="modal-hero-text">
+        <div class="modal-num">02</div>
+        <h2 class="modal-service-title" id="modal-conciergerie-title">Conciergerie Digitale</h2>
+        <p class="modal-lead">Un QR Code dirige vos invités vers une WebApp sans installation : menu interactif, plan de table intelligent et social wall en temps réel — l'expérience connectée au service de votre grand jour.</p>
+      </div>
+    </div>
+
+    <div class="modal-badges">
+      <span class="modal-badge">Sans installation</span>
+      <span class="modal-badge">QR Code</span>
+      <span class="modal-badge">Social Wall</span>
+      <span class="modal-badge">Plan de table</span>
+      <span class="modal-badge">Menu interactif</span>
+    </div>
+
+    <div class="modal-content">
+      <p>
+        La <strong>Conciergerie Digitale AMIRA</strong> transforme votre mariage en une expérience connectée et fluide pour chaque invité. Fini les listes papier perdues ou les panneaux de table illisibles : un simple QR Code, imprimé sur votre faire-part ou disposé à l'entrée de salle, suffit à tout dévoiler.
+      </p>
+      <p>
+        Vos invités accèdent instantanément à une <strong>WebApp élégante et personnalisée</strong> à vos couleurs : menu de réception avec options alimentaires, plan de table interactif avec recherche par nom, compte à rebours avant la cérémonie et accès au programme de la soirée.
+      </p>
+      <p>
+        Le <strong>Social Wall en temps réel</strong> invite chacun à partager ses photos et messages depuis son téléphone — une mosaïque vivante projetée sur grand écran, qui capture les émotions de votre journée au fil des instants. En fin de soirée, vous récupérez une galerie complète de tous les souvenirs partagés.
+      </p>
+      <p>
+        Aucune application à télécharger, aucune inscription requise. Un accès universel, aussi bien depuis un iPhone que depuis un Android, pensé pour tous vos invités, quel que soit leur degré de familiarité avec le numérique.
+      </p>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-footer-btns">
+      <a href="#" class="btn-modal-primary" onclick="closeModal('modal-conciergerie'); openPage('page-contact'); return false;">
+        Voir une démo ↓
+      </a>
+      <a href="#" class="btn-modal-outline" onclick="closeModal('modal-conciergerie'); openPage('page-contact'); return false;">
+        Faisons Connaissance →
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     MODAL – Pack Sur Mesure
+══════════════════════════════ -->
+<div id="modal-sur-mesure" role="dialog" aria-modal="true" aria-labelledby="modal-sur-mesure-title">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal('modal-sur-mesure')" aria-label="Fermer">✕</button>
+
+    <div class="modal-hero-grid">
+      <div class="modal-hero-img" style="background: #c9b99a url('mesure1.jpg') center/cover;"></div>
+      <div class="modal-hero-text">
+        <div class="modal-num">01</div>
+        <h2 class="modal-service-title" id="modal-sur-mesure-title">Organisation de Mariage – Pack « Sur Mesure »</h2>
+        <p class="modal-lead">Laissez-nous tout gérer. Nous partons de votre vision et vous proposons un pack entièrement personnalisé, pensé pour vous de la première idée jusqu'au dernier détail.</p>
+      </div>
+    </div>
+
+    <div class="modal-badges">
+      <span class="modal-badge">100% personnalisé</span>
+      <span class="modal-badge">De A à Z</span>
+      <span class="modal-badge">Toutes villes</span>
+      <span class="modal-badge">Sur mesure</span>
+    </div>
+
+    <div class="modal-content">
+      <p>
+        Vous rêvez d'un mariage à ciel ouvert ? Un événement à thème qui reflète votre histoire d'amour ? Un mariage 100% traditionnel ou bien alliant tradition et modernité, ou encore fusionnant la riche culture marocaine avec les traditions du pays de votre partenaire ?
+      </p>
+      <p>
+        Nous sommes là pour transformer vos rêves en réalité. Notre service d'organisation de mariage sur mesure vous accompagne à chaque étape pour créer une journée unique, à votre image.
+      </p>
+      <p>
+        Que vous souhaitiez une cérémonie intimiste ou une célébration grandiose, nous mettons tout en œuvre pour que chaque détail soit parfait. Faisant de votre mariage un moment inoubliable, où chaque instant raconte votre histoire.
+      </p>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-footer-btns">
+      <a href="#" class="btn-modal-primary" onclick="closeModal('modal-sur-mesure'); openPage('page-processus'); return false;">
+        Processus Détaillé ↓
+      </a>
+      <a href="#" class="btn-modal-outline" onclick="closeModal('modal-sur-mesure'); openPage('page-contact'); return false;">
+        Faisons Connaissance →
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL – Packs Clé en Main
+══════════════════════════════ -->
+<div id="modal-cle-en-main" role="dialog" aria-modal="true" aria-labelledby="modal-cle-en-main-title">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal('modal-cle-en-main')" aria-label="Fermer">✕</button>
+
+    <div class="modal-hero-grid">
+      <div class="modal-hero-img" style="background: #bfae97 url('clé2.jpg') center/cover;"></div>
+      <div class="modal-hero-text">
+        <div class="modal-num">02</div>
+        <h2 class="modal-service-title" id="modal-cle-en-main-title">Packs Mariage « Clé en Main »</h2>
+        <p class="modal-lead">Vous recherchez une solution sans stress pour votre mariage ? Nos packs clé en main sont conçus pour vous offrir une tranquillité d'esprit totale.</p>
+      </div>
+    </div>
+
+    <div class="modal-badges">
+      <span class="modal-badge">Tout compris</span>
+      <span class="modal-badge">Flexible</span>
+      <span class="modal-badge">Toutes villes</span>
+      <span class="modal-badge">En cours</span>
+    </div>
+
+    <div class="modal-content">
+      <p>
+        Ces formules tout compris incluent toutes les prestations essentielles pour assurer le bon déroulement de votre journée spéciale, disponibles dans toutes les grandes villes du royaume.
+      </p>
+      <p>
+        Chaque pack est entièrement <strong>flexible</strong>, vous permettant d'ajuster les services selon vos envies : investir davantage dans un aspect particulier, réduire les coûts ailleurs, ou encore ajouter des options à la carte pour rendre votre mariage unique et à votre image.
+      </p>
+      <p>
+        Nous proposons des prix adaptés en fonction de la ville et du nombre d'invités, et nous fournissons une description détaillée de chaque pack et des services inclus.
+      </p>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-footer-btns">
+      <a href="#" class="btn-modal-outline" onclick="closeModal('modal-cle-en-main'); openPage('page-contact'); return false;">
+        Faisons Connaissance →
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL – Services À la carte
+══════════════════════════════ -->
+<div id="modal-a-la-carte" role="dialog" aria-modal="true" aria-labelledby="modal-a-la-carte-title">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal('modal-a-la-carte')" aria-label="Fermer">✕</button>
+
+    <div class="modal-hero-grid">
+      <div class="modal-hero-img" style="background: #d4c4a8 url('carte3.jpg') center/cover;"></div>
+      <div class="modal-hero-text">
+        <div class="modal-num">03</div>
+        <h2 class="modal-service-title" id="modal-a-la-carte-title">Services « À la carte »</h2>
+        <p class="modal-lead">Vous avez déjà organisé le plus gros de votre mariage et vous avez besoin d'un coup de main pour certains aspects ? Nos services à la carte sont faits pour vous.</p>
+      </div>
+    </div>
+
+    <div class="modal-badges">
+      <span class="modal-badge">Traiteur</span>
+      <span class="modal-badge">Décoration</span>
+      <span class="modal-badge">Animation</span>
+      <span class="modal-badge">Toutes villes</span>
+    </div>
+
+    <div class="modal-content">
+      <p>
+        Choisissez parmi une gamme de prestations incluant <strong>traiteur, décoration, animation</strong>, et bien plus encore. Que vous ayez besoin d'un seul service ou de plusieurs, nous faisons tout pour vous simplifier la vie.
+      </p>
+      <p>
+        Nous comparons les meilleurs prestataires disponibles, gérons le suivi des devis, et vous proposons plusieurs options parfaitement adaptées à vos besoins et à votre budget.
+      </p>
+      <p>
+        Avec nos options à la carte, vous restez aux commandes de l'organisation de votre grand jour — nous vous apportons un coup de main là où vous en avez besoin.
+      </p>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-footer-btns">
+      <a href="#" class="btn-modal-outline" onclick="closeModal('modal-a-la-carte'); openPage('page-contact'); return false;">
+        Faisons Connaissance →
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     PAGE – Processus Détaillé (7 Étapes)
+══════════════════════════════ -->
+<div id="page-processus" class="page-overlay" role="dialog" aria-modal="true">
+  <button class="process-close" onclick="closePage('page-processus')" aria-label="Fermer">✕</button>
+  <div class="process-page">
+    <span class="process-tag">Comment ça marche ?</span>
+    <h1 class="process-main-title">Le Pack « Sur Mesure » En 7 Étapes</h1>
+    <div class="process-check-icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <p class="process-intro">Notre processus d'accompagnement « Sur Mesure » est conçu pour vous offrir une tranquillité d'esprit, vous permettant de vivre pleinement chaque moment de votre journée spéciale sans vous soucier des détails pratiques.</p>
+
+    <div class="process-layout">
+      <div class="process-img-col">
+        <div class="process-img-circle"></div>
+      </div>
+      <div class="process-steps">
+
+        <div class="process-step">
+          <span class="step-num">Étape 01</span>
+          <h3 class="step-title">Premier contact</h3>
+          <p class="step-desc">Lors d'une première rencontre ou d'un appel, nous faisons connaissance et discutons de votre vision, de vos attentes, de votre budget et de vos préférences. Nous synthétisons ceci dans un compte rendu que nous partageons avec vous et qui servira de fil conducteur tout au long des préparatifs.</p>
+        </div>
+
+        <div class="process-step">
+          <span class="step-num">Étape 02</span>
+          <h3 class="step-title">Conception et planification</h3>
+          <p class="step-desc">Notre équipe élabore une plaquette personnalisée pour le mariage, incluant le thème, le style, la palette de couleurs, et d'autres détails importants. Un plan global est ensuite développé, avec un calendrier des tâches à réaliser jusqu'au jour J.</p>
+        </div>
+
+        <div class="process-step">
+          <span class="step-num">Étape 03</span>
+          <h3 class="step-title">Sélection des prestataires</h3>
+          <p class="step-desc">AMIRA vous aide à sélectionner les prestataires adaptés (lieu de réception, traiteur, fleuriste, photographe, etc.). Nous nous occupons de la recherche, comparons les offres, traitons les devis et négocions les prix pour vous obtenir les meilleures conditions.<br><strong>Le choix final des prestataires reste toujours entre vos mains.</strong></p>
+        </div>
+
+        <div class="process-step">
+          <span class="step-num">Étape 04</span>
+          <h3 class="step-title">Suivi et coordination des préparatifs</h3>
+          <p class="step-desc">Tout au long des préparatifs, notre équipe reste en contact avec vous, assurant un suivi régulier et ajustant les plans si nécessaire. Nous nous assurons que tout se déroule comme prévu et que les délais sont respectés.</p>
+        </div>
+
+        <div class="process-step">
+          <span class="step-num">Étape 05</span>
+          <h3 class="step-title">Visite du lieu</h3>
+          <p class="step-desc">Autour de 2 mois avant le jour J, nous proposons un déplacement dans le lieu de mariage pour ficeler les derniers détails de mise en place, de décoration et de déroulé pour vous assurer que tout soit sans surprise pour le jour J.</p>
+        </div>
+
+        <div class="process-step">
+          <span class="step-num">Étape 06</span>
+          <h3 class="step-title">Jour du mariage</h3>
+          <p class="step-desc">Nous sommes présents sur place pour superviser chaque étape du jour J. Notre équipe coordonne les prestataires, veille au respect du timing et gère les imprévus. Nous assurons la coordination de tous les aspects logistiques, tels que la livraison des décorations, l'installation du matériel, la disposition des tables, etc.<br><strong>Vous pouvez ainsi profiter pleinement de votre journée sans stress.</strong></p>
+        </div>
+
+        <div class="process-step">
+          <span class="step-num">Étape 07</span>
+          <h3 class="step-title">Clôture et suivi post-mariage</h3>
+          <p class="step-desc">Après le mariage, notre équipe s'occupe de la clôture des dossiers, s'assure que les prestations sont finalisées dans les délais (Photos, Montages vidéos, Albums, etc.), que les paiements finaux sont effectués et peut organiser le retour des éléments loués.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="process-rdv-btn">
+      <button class="btn-process-rdv" onclick="closePage('page-processus'); openPage('page-contact');">
+        Je Réserve Un Rendez-Vous ➤
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE – Contact / Rendez-vous
+══════════════════════════════ -->
+<div id="page-contact" class="page-overlay" role="dialog" aria-modal="true">
+  <button class="process-close" onclick="closePage('page-contact')" aria-label="Fermer">✕</button>
+  <div class="contact-page">
+
+    <div class="contact-top">
+      <span class="contact-top-tag">Prise de rendez-vous</span>
+      <h1 class="contact-top-title">Discutons De Votre Grand Jour…</h1>
+    </div>
+
+    <div class="contact-cards-row">
+      <div class="contact-info-card">
+        <div class="contact-icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
+        <span class="contact-card-label">WhatsApp / Phone</span>
+        <div class="contact-card-value"><br>+212 5 37 67 00 00</div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <span class="contact-card-label">E-mail</span>
+        <div class="contact-card-value">amira@gmail.com</div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-icon-circle">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <span class="contact-card-label">Adresse au Maroc</span>
+        <div class="contact-card-value">34, Avenue Okba, Agdal, RAВАТ,<br>Rabat</div>
+      </div>
+    </div>
+
+    <div class="contact-map-section">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26467.1!2d-6.8698!3d33.9926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda76b871c9b9bdb%3A0xbcd374e94c5d9b00!2sAgdal%2C%20Rabat%2C%20Maroc!5e0!3m2!1sfr!2sma!4v1748961600000!5m2!1sfr!2sma"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div class="contact-form-layout">
+      <div class="contact-form-left">
+        <h2>Prenons 15mn Pour Discuter De Votre Grand Jour!</h2>
+        <hr style="border:none;border-top:1.5px solid rgba(201,169,110,0.3);margin:1.5rem 0;">
+        <div class="contact-socials-row">
+          <p>Vous pouvez aussi<br>nous contacter sur<br>les réseaux ✅</p>
+          <a href="#" class="social-icon-btn fb" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-icon-btn ig" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+          <a href="https://wa.me/33745305170" class="social-icon-btn wa" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form-right">
+        <label class="form-label">Faisons connaissance… <span>*</span></label>
+        <input class="form-input" type="text" placeholder="Votre nom">
+
+        <label class="form-label">Contact <span>*</span></label>
+        <input class="form-input" type="text" placeholder="Votre numéro de téléphone ou WhatsApp">
+
+        <div class="form-radio-group">
+          <label class="form-radio-label">Quel type d'événement préparez-vous ? <span style="color:var(--gold)">*</span></label>
+          <label class="radio-option"><input type="radio" name="event" value="mariage"> Mon Mariage 💍</label>
+          <label class="radio-option"><input type="radio" name="event" value="fiancailles"> Mes Fiançailles 💎</label>
+          <label class="radio-option"><input type="radio" name="event" value="autre"> Autre</label>
+        </div>
+
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Laissez nous un message avec la date et la ville si connus 😊"></textarea>
+
+        <button class="btn-send">Envoyer</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span>AMIRA</span>
+    <span>Weddings &amp; Events Planner</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Accueil</a></li>
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#" onclick="openPage('page-contact'); return false;" class="nav-cta">Prendre rendez-vous</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Premier wedding planner 100% flexible au Maroc</p>
+    <h1 class="hero-title">Creating Forever<br>Memories…</h1>
+    <p class="hero-subtitle">
+      Où que vous soyez, organisez votre mariage <strong>au Maroc</strong> en toute sérénité.
+    </p>
+    <div class="hero-actions">
+      <a href="#about" class="btn-outline">En savoir plus</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-grid">
+      <div class="img-main"></div>
+      <div class="img-top"></div>
+      <div class="img-bot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="services-header">
+    <span class="section-tag">Nos Packs et services</span>
+    <h2 class="section-title">Découvrez nos offres</h2>
+  </div>
+
+  <!-- Row 1 : 3 offres principales -->
+  <div class="services-grid">
+
+    <!-- CARTE 1 : Pack Sur Mesure -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img class="service-img" src="mesure1.jpg" alt="Pack Sur Mesure">
+      </div>
+      <div class="service-body">
+        <h3 class="service-name">Pack « Sur Mesure » — De A à Z</h3>
+        <p class="service-desc">Laissez-nous tout gérer. Nous partons de votre vision et vous proposons un pack entièrement personnalisé, pensé pour vous de la première idée jusqu'au dernier détail.</p>
+        <button class="service-link" onclick="openModal('modal-sur-mesure')">Lire la suite</button>
+      </div>
+      <div class="service-bottom-line"></div>
+    </div>
+
+    <!-- CARTE 2 : Packs Clé en Main -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img class="service-img" src="clé2.jpg" alt="Packs Clé en Main">
+      </div>
+      <div class="service-body">
+        <h3 class="service-name">Packs « Clé en Main »</h3>
+        <p class="service-desc">Des offres clés en main dans plusieurs villes, mais flexibles selon vos envies. Une formule complète qui s'adapte à vos souhaits, où que vous soyez au Maroc. <em style="color:var(--gold);font-size:0.8rem;">(En cours)</em></p>
+        <button class="service-link" onclick="openModal('modal-cle-en-main')">Lire la suite</button>
+      </div>
+      <div class="service-bottom-line"></div>
+    </div>
+
+    <!-- CARTE 3 : Services À la carte -->
+    <div class="service-card">
+      <div class="service-img-wrap">
+        <img class="service-img" src="carte3.jpg" alt="Services À la carte">
+      </div>
+      <div class="service-body">
+        <h3 class="service-name">Services « À la carte »</h3>
+        <p class="service-desc">Options à la carte pour vos besoins spécifiques, dans toutes les villes et pour tous types de prestations. Choisissez uniquement ce dont vous avez besoin.</p>
+        <button class="service-link" onclick="openModal('modal-a-la-carte')">Lire la suite</button>
+  <div class="services-bottom-line"></div>
+
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-imgs">
+      <div class="about-circle">
+        <div class="about-circle-inner"></div>
+      </div>
+    </div>
+    <div class="about-text">
+      <span class="section-tag">Qui sommes nous ?</span>
+      <h2 class="section-title">L'histoire derrière AMIRA</h2>
+      <p>
+        Née d'une passion pour l'événementiel et une vraie <strong>orientation client</strong>, AMIRA est une agence familiale dont l'objectif premier est de vous permettre de réduire les efforts de recherche, comparaison, demandes de devis, relances et suivi de vos prestataires.
+      </p>
+      <p>
+        Grâce à nos partenariats avec des professionnels qualifiés à travers le royaume, et notre veille constante sur le marché, nous vous assurons des prix défiant toute concurrence et un rendu au delà de vos attentes !
+      </p>
+      <a href="#contact" class="btn-primary" style="margin-top:0.5rem;">Lire la suite</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BAND ── -->
+<section id="cta-band">
+  <div class="cta-band-text">
+    <span class="section-tag" style="color:var(--gold-light);">Passez à l'action</span>
+    <h2 class="section-title">Créez l'événement<br>de vos rêves</h2>
+    <p>Contactez-nous dès aujourd'hui pour commencer à planifier votre mariage.</p>
+  </div>
+  <a href="#contact" class="btn-primary" style="white-space:nowrap;flex-shrink:0;">Discutons de votre grand jour</a>
+</section>
+
+<!-- ── CE QUI NOUS DISTINGUE ── -->
+<section id="distingue">
+  <span class="section-tag">Notre proposition de valeur</span>
+  <h2 class="section-title">Ce qui nous distingue</h2>
+  <div class="separator"></div>
+  <div class="dist-grid">
+
+    <div class="dist-card">
+      <div class="dist-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h3>Équipe à l'écoute</h3>
+      <p>Une équipe attentive à vos besoins et toujours joignable pour répondre à vos questions.</p>
+    </div>
+
+    <div class="dist-card">
+      <div class="dist-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <h3>Service 100% flexible</h3>
+      <p>Adapté à vos besoins, disponible en Français, Anglais et Arabe selon vos préférences.</p>
+    </div>
+
+    <div class="dist-card">
+      <div class="dist-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Réseau de partenaires</h3>
+      <p>Des partenaires de confiance qualifiés à travers tout le royaume du Maroc.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section id="stats">
+  <div class="stat-item">
+    <div class="stat-number">150+</div>
+    <div class="stat-label">Partenaires de confiance</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">5</div>
+    <div class="stat-label">Membres de l'équipe</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">30%</div>
+    <div class="stat-label">D'économies en moyenne</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">98%</div>
+    <div class="stat-label">Satisfaction client</div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section id="final-cta" id="contact">
+  <div class="final-cta-inner">
+    <span class="section-tag">Discutons de votre Grand jour…</span>
+    <h2 class="section-title">Prendre rendez-vous</h2>
+    <div class="separator"></div>
+    <p>C'est gratuit et sans engagement ! Contactez-nous et laissez-nous vous accompagner vers le mariage de vos rêves.</p>
+    <a href="#" onclick="openPage('page-contact'); return false;" class="btn-primary">Prendre rendez-vous</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="align-items:flex-start;">
+        <span>AMIRA</span>
+        <span>Weddings &amp; Events Planner</span>
+      </a>
+      <p>Agence spécialisée dans les expériences de mariage uniques : Bar à Parfums, Conciergerie Digitale et offres sur mesure au Maroc.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Rendez-vous</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#" onclick="openModal('modal-parfums');return false;">Bar à Parfums Éphémère</a></li>
+        <li><a href="#" onclick="openModal('modal-conciergerie');return false;">Conciergerie Digitale</a></li>
+        <li><a href="#">Pack Sur Mesure</a></li>
+        <li><a href="#">Packs Clé en Main</a></li>
+        <li><a href="#">Services À la carte</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:amira@gmail.com">amira@gmail.com</a></li>
+        <li><a href="tel:+212 5 37 67 00 00">+212 5 37 67 00 00</a></li>
+        <li><a href="#">Casablanca, Maroc</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 AMIRA — Tous droits réservés</span>
+    <span>Weddings &amp; Events Planner au Maroc</span>
+  </div>
+</footer>
+
+<script>
+  function openModal(id) {
+    const el = document.getElementById(id);
+    el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    el.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openPage(id) {
+    const el = document.getElementById(id);
+    el.classList.add('open');
+    el.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePage(id) {
+    const el = document.getElementById(id);
+    el.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  const allModals = ['modal-parfums','modal-conciergerie','modal-sur-mesure','modal-cle-en-main','modal-a-la-carte'];
+
+  allModals.forEach(function(id) {
+    document.getElementById(id).addEventListener('click', function(e) {
+      if (e.target === this) closeModal(id);
+    });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      allModals.forEach(closeModal);
+      closePage('page-processus');
+      closePage('page-contact');
+    }
+  });
+</script>
+
+</body>
+</html>
